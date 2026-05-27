@@ -54,4 +54,24 @@ public class StockMovementsService {
                 .build();
         return toResponse(movements);
     }
+    @Transactional
+    public StockMovementsResponse dispatchStock(StockMovementRequest request){
+        Product product = productRepository.findById(request.getProductId()).orElseThrow(()-> new RuntimeException("product doesnt found"));
+        Warehouse warehouse = warehouseRepository.findById(request.getWarehouseId()).orElseThrow(()-> new RuntimeException("warehouse not found"));
+        ProductWarehouseId pwId = new ProductWarehouseId(product.getId(),warehouse.getId());
+        ProductWarehouse pw = productWarehouseRepository.findById(pwId).orElseThrow(()-> new RuntimeException("no stock found for this product in warehouse"));
+        if(pw.getCurrentStock() < request.getQuantity()){
+            throw new RuntimeException("insufficient stock");
+        }
+        pw.setCurrentStock(pw.getCurrentStock()-request.getQuantity());
+        productWarehouseRepository.save(pw);
+        StockMovements movements = StockMovements.builder()
+                .product(product)
+                .warehouse(warehouse)
+                .quantity(request.getQuantity())
+                .movementType("OUT")
+                .reason(request.getReason())
+                .build();
+        return toResponse(movements);
+    }
 }
