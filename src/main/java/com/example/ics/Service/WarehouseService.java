@@ -4,6 +4,8 @@ import com.example.ics.Dto.WarehouseRequest;
 import com.example.ics.Dto.WarehouseResponse;
 import com.example.ics.Models.Warehouse;
 import com.example.ics.Repository.WarehouseRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,5 +39,17 @@ public class WarehouseService {
         Warehouse saved = warehouseRepository.save(warehouse);
         return toResponse(saved);
     }
-    
+    @Transactional(readOnly = true)
+    public WarehouseResponse getById(Long id){
+        Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(()-> new RuntimeException("warehouse not found"));
+        return toResponse(warehouse);
+    }
+    @Transactional(readOnly = true)
+    public Page<WarehouseResponse> getAll(Pageable pageable){
+        return warehouseRepository.findAll(pageable).map(this::toResponse);
+    }
+    @Transactional
+    public void deleteWarehouse(Long id){
+        warehouseRepository.deleteById(id);
+    }
 }

@@ -45,7 +45,7 @@ public class ProductService {
         return toResponse(product);
     }
     @Transactional(readOnly = true)
-    public Page<ProductResponse> getAllProduct(Pageable pageable){
+    public Page<ProductResponse> getAllProducts(Pageable pageable){
         return productRepository.findAll(pageable).map(this::toResponse);
     }
     @Transactional
