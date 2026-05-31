@@ -30,6 +30,7 @@ public class StockMovementsService {
                 .warehouseId(movements.getWarehouse().getId())
                 .warehouseName(movements.getWarehouse().getName())
                 .movementsType(movements.getMovementType())
+                .quantity(movements.getQuantity())
                 .reason(movements.getReason())
                 .createdAt(movements.getCreatedAt())
                 .build();
@@ -56,7 +57,7 @@ public class StockMovementsService {
                 .reason(request.getReason())
                 .build();
         StockMovements saved = stockMovementsRepository.save(movements);
-        return toResponse(movements);
+        return toResponse(saved);
     }
     @Transactional
     public StockMovementsResponse dispatchStock(StockMovementRequest request){
@@ -77,7 +78,7 @@ public class StockMovementsService {
                 .reason(request.getReason())
                 .build();
         StockMovements saved = stockMovementsRepository.save(movements);
-        return toResponse(movements);
+        return toResponse(saved);
     }
     @Transactional
     public StockMovementsResponse adjustStock(StockMovementRequest request){

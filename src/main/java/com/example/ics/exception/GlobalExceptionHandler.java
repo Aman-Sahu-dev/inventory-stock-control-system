@@ -7,9 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.nio.file.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import java.util.Map;
-import java.util.concurrent.RecursiveTask;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -30,7 +29,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Map<String,String>> handleAccessDenied(AccessDeniedException e){
-        return ResponseEntity.status(401).body(Map.of("error","Access Denied"));
+        return ResponseEntity.status(403).body(Map.of("error","Access Denied"));
     }
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Map<String,String>> handleDataIntegrity(DataIntegrityViolationException e){

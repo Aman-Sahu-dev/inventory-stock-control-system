@@ -15,18 +15,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StockMovementsController {
     private final StockMovementsService stockMovementsService;
-    @PreAuthorize("hasRole('ADMIN','WAREHOUSE_MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN','WAREHOUSE_MANAGER')")
     @PostMapping("/receive")
     public ResponseEntity<StockMovementsResponse> receiveStock(@RequestBody StockMovementRequest request){
         return ResponseEntity.status(201).body(stockMovementsService.receiveStock(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN','WAREHOUSE_MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN','WAREHOUSE_MANAGER')")
     @PostMapping("/dispatch")
     public ResponseEntity<StockMovementsResponse> dispatchStock(@RequestBody StockMovementRequest request){
         return ResponseEntity.status(201).body(stockMovementsService.dispatchStock(request));
     }
-    @PreAuthorize("hasRole('ADMIN','WAREHOUSE_MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN','WAREHOUSE_MANAGER')")
     @PatchMapping
     public ResponseEntity<StockMovementsResponse> adjustStock(@RequestBody StockMovementRequest request){
         return ResponseEntity.ok(stockMovementsService.adjustStock(request));
